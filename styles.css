@@ -1,0 +1,49 @@
+body {
+    font-family: "Roboto Mono", monospace;
+}
+
+h1 {
+    margin: 1% auto;
+    font-size: 1.5rem;
+}
+
+table {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+thead {
+    letter-spacing: 1px;
+}
+thead th:nth-child(1) {
+    width: 28%;
+}
+thead th:nth-child(2) {
+    width: 22%;
+}
+thead th:nth-child(3) {
+    width: 50%;
+}
+thead {
+    color: white;
+    background-color: rgb(95, 14, 105);
+}
+
+tbody {
+    font-size: 0.8rem;
+    letter-spacing: 0.2px;
+}
+tbody th, tbody td {
+    padding: 0.3rem;
+    font-weight: normal;
+}
+
+/* "zebra-striping" rows */
+tbody tr:nth-child(odd) {
+    background-color: #EEE;
+}
+tbody tr:nth-child(even) {
+    background-color: #CCC;
+}

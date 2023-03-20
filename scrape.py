@@ -1,18 +1,17 @@
-# standard library
 
-# third-party
 import easyocr
 import pyautogui
 from bs4 import BeautifulSoup
 from fuzzywuzzy import fuzz
 from mss import mss
-from PIL import image
-# local
+from PIL import Image
+
 import download
 
-def download_webpage():
-    """Download """
-    pass
+def parse_webpage(webpage, parser='html.parser'):
+    """Open provided webpage and parse using BeautifulSoup."""
+    with open(webpage, 'r', encoding='utf-8') as f:
+        return BeautifulSoup(f, parser)
 
 def scrape():
     """Clicks links to load additional content, then scrapes webpage.
@@ -30,28 +29,40 @@ def scrape():
 
     # 1. download initially
     webpage = download.dl_to_known_location()
-    
-    # 2. parse using BS4 - extract description text
-    with open(webpage, encoding='utf-8', 'r') as f:
-        soup = BeautifulSoup(f, 'html.parser')  # can also use lxml per BS docs
+    soup = parse_webpage(webpage)
 
-    # 3. center the table
+    # 2. parse - extract description text
+    tx_table = soup.find('tbody')
+    rows = tx_table.find_all('tr')
+    descriptions = [row.find_all('td')[1].text for row in rows]
+    print('Descriptions extracted:', descriptions)
 
-    # 4. take screenshot, crop
+    # 3. take screenshot, crop
     screenshotter = mss()
 
-    # 5. perform OCR
+    # 4. perform OCR
     ocr_reader = easyocr.Reader(['en'], gpu=False)
 
-    # 6. match OCR results with description text (fuzzywuzzy)
+    # 5. match OCR results with description text (fuzzywuzzy)
 
-    # 7. click all the links
+    # 6. click all the links
 
-    # 8. download again, and parse!
+    # 7. download again, and parse!
+    soup = parse_webpage(download.dl_to_known_location())
 
-    # 9. return parsed info
+    # 8. return parsed info
 
-    pass
+if __name__ == '__main__':
+    scrape()
+
+'''
+Not dealing with:
+- error handling
+    . what happens if the webpage doesn't download?
+    . what happens if we are using the wrong encoding?
+- centering the table
+- cleanup (deleting the downloaded webpage)
+'''
 
 '''
 1. Download the page using BeautifulSoup

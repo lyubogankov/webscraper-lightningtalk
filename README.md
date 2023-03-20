@@ -22,7 +22,20 @@ This code was tested using the OS / Chrome versions below.  I do not guarantee i
 - Windows; Google Chrome 
 
 ## TODO
+
+Python:
 - research minimum python version
 - what are the requirements (package version wise)?  can I make a requirements.txt?
+
+Demo webpage:
+- Do the HTML/CSS
+- Research Javascript
+    - https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Image_gallery
+    - https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events
+    - https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/Adding_bouncing_balls_features
+    - https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs
+    - https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Introduction
+    - https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Manipulating_documents
+
 - when recording GIF, increase my text-scaling (search for "fonts" in system), also use not-full-screen version of chrome (I want the GIF to be legible to everyone)
 - make slides!
