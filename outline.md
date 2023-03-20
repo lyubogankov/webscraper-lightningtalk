@@ -32,3 +32,9 @@ Show a GIF of this running!
 **Warnings**
 
 With easyocr, each word usually has its own bounding box.  you may need to process easy-ocr's output further (ex: group words that have approx same y-coords into same row, space-delimited)
+    Show annotated screenshot!
+
+pyautogui, PIL, easyocr all have different boundingbox coordinate "systems"
+
+Fuzzywuzzy: match OCR results with description text
+In the slides - give example of real description vs real OCR'd and fuzzywuzzy results since the example is "clean"?

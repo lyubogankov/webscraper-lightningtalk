@@ -1,3 +1,4 @@
+from pprint import pprint
 
 import easyocr                  # https://pypi.org/project/easyocr/
 import mss                      # https://pypi.org/project/mss/
@@ -8,7 +9,7 @@ from PIL import Image           # https://pypi.org/project/Pillow/
 
 import download
 
-from pprint import pprint
+pyautogui.PAUSE = 1
 
 def parse_webpage(webpage, parser='html.parser'):
     """Open provided webpage and parse using BeautifulSoup."""
@@ -22,6 +23,19 @@ def take_cropped_screenshot(top, left, width, height, outputname='screenshot.png
         image = screenshotter.grab(monitor)
         mss.tools.to_png(image.rgb, image.size, output=outputname)
     return outputname
+
+def easyocr_to_pyautogui_coords(easyocr_boundingbox):
+    """Convert easyocr boundingbox to pyautogui boundingbox."""
+    #   top left, top right, bot right, bot left
+    ((tl_x, tl_y), (tr_x, _), (_, _), (_, bl_y)) = easyocr_boundingbox
+    return (tl_x, tl_y, tr_x - tl_x, bl_y - tl_y)
+
+def center_and_click(pyautogui_boundingbox):
+    pyautogui.click(
+        pyautogui.center(
+            pyautogui_boundingbox
+        )
+    )
 
 def scrape():
     """Clicks links to load additional content, then scrapes webpage.
@@ -49,24 +63,39 @@ def scrape():
     print('Descriptions extracted:', descriptions)
 
     # 3. take screenshot, crop
-    screenshot = take_cropped_screenshot(top=150, left=480, width=480, height=530)
+    OFFSET_TOP = 150
+    OFFSET_LEFT = 480
+    screenshot = take_cropped_screenshot(top=OFFSET_TOP, left=OFFSET_LEFT, width=480, height=530)
     print(screenshot)
 
     # 4. perform OCR
     ocr_reader = easyocr.Reader(['en'], gpu=False)
-    results = ocr_reader.readtext(screenshot)
+    ocr_results = iter(ocr_reader.readtext(screenshot))  # list -> iterator
 
-    pprint(results)
+    print('------------')
+    print('OCR Results:')
+    pprint(ocr_results)
+    print('------------')
+
+    # 6. match descriptions to OCR results, click all the links
+    for i, desc in enumerate(descriptions):
+        while True:
+            # not handling StopIteration exception
+            ocrboundingbox, text, _ = next(ocr_results)
+            # offset our screenshot to get real screen coords!
+            x, y, width, height = easyocr_to_pyautogui_coords(ocrboundingbox)
+            realboundingbox = (x + OFFSET_LEFT, y + OFFSET_TOP, width, height)
+
+            similarity = fuzz.partial_ratio(desc.lower(), text.lower())  # [0, 100]
+            print(f'\t{desc:>12} {text:>12} [{similarity}% match]')
+            if similarity > 80:
+                center_and_click(realboundingbox)
+
+                # # if needed, close the box (2nd click)
+
+                break
 
     return
-
-    # NOTE if it turns out that the OCR doesn't like the spaces (ex: "PyCon ticket")
-    #      cut it down to one word per description (ex: "PyCon")
-
-    # 5. match OCR results with description text (fuzzywuzzy)
-
-    # 6. click all the links
-
     # 7. download again, and parse!
     soup = parse_webpage(download.dl_to_known_location())
 
