@@ -1,17 +1,27 @@
 
-import easyocr
-import pyautogui
-from bs4 import BeautifulSoup
-from fuzzywuzzy import fuzz
-from mss import mss
-from PIL import Image
+import easyocr                  # https://pypi.org/project/easyocr/
+import mss                      # https://pypi.org/project/mss/
+import pyautogui                # https://pypi.org/project/PyAutoGUI/
+from bs4 import BeautifulSoup   # https://pypi.org/project/beautifulsoup4/
+from fuzzywuzzy import fuzz     # https://pypi.org/project/fuzzywuzzy/
+from PIL import Image           # https://pypi.org/project/Pillow/
 
 import download
+
+from pprint import pprint
 
 def parse_webpage(webpage, parser='html.parser'):
     """Open provided webpage and parse using BeautifulSoup."""
     with open(webpage, 'r', encoding='utf-8') as f:
         return BeautifulSoup(f, parser)
+
+def take_cropped_screenshot(top, left, width, height, outputname='screenshot.png'):
+    """Take a screenshot of a portion of the screen."""
+    with mss.mss() as screenshotter:
+        monitor = {'top': top, 'left': left, 'width': width, 'height': height}
+        image = screenshotter.grab(monitor)
+        mss.tools.to_png(image.rgb, image.size, output=outputname)
+    return outputname
 
 def scrape():
     """Clicks links to load additional content, then scrapes webpage.
@@ -34,14 +44,24 @@ def scrape():
     # 2. parse - extract description text
     tx_table = soup.find('tbody')
     rows = tx_table.find_all('tr')
-    descriptions = [row.find_all('td')[1].text for row in rows]
+    descriptions = [row.find_all('td')[2].text for row in rows]
+    
     print('Descriptions extracted:', descriptions)
 
     # 3. take screenshot, crop
-    screenshotter = mss()
+    screenshot = take_cropped_screenshot(top=150, left=480, width=480, height=530)
+    print(screenshot)
 
     # 4. perform OCR
     ocr_reader = easyocr.Reader(['en'], gpu=False)
+    results = ocr_reader.readtext(screenshot)
+
+    pprint(results)
+
+    return
+
+    # NOTE if it turns out that the OCR doesn't like the spaces (ex: "PyCon ticket")
+    #      cut it down to one word per description (ex: "PyCon")
 
     # 5. match OCR results with description text (fuzzywuzzy)
 
@@ -54,6 +74,37 @@ def scrape():
 
 if __name__ == '__main__':
     scrape()
+
+'''
+example.png
+
+Draw bounding boxes around the OCR results -- show easyocr's behavior!
+
+OCR results:
+
+[([[15, 21], [119, 21], [119, 61], [15, 61]], 'Pycon', 0.6994198329365593),
+ ([[133, 21], [257, 21], [257, 57], [133, 57]], 'ticket', 0.9999962526402947),
+ ([[13, 87], [159, 87], [159, 129], [13, 129]], 'Lodging', 0.9999927908914014),
+ ([[15, 155], [179, 155], [179, 195], [15, 195]],
+  'Airplane',
+  0.8327755179002724),
+ ([[193, 155], [337, 155], [337, 191], [193, 191]],
+  'tickets',
+  0.9999943228283826),
+ ([[15, 223], [217, 223], [217, 259], [15, 259]],
+  'Restaurant',
+  0.9999608935635564),
+ ([[14, 292], [198, 292], [198, 324], [14, 324]],
+  'Groceries',
+  0.9999074914518178),
+ ([[14, 358], [158, 358], [158, 390], [14, 390]],
+  'Transit',
+  0.9059198505865829),
+ ([[173, 355], [257, 355], [257, 391], [173, 391]], 'fare', 0.9999932050704956),
+ ([[13, 423], [199, 423], [199, 459], [13, 459]],
+  'Groceries',
+  0.9999418250206089)]
+'''
 
 '''
 Not dealing with:

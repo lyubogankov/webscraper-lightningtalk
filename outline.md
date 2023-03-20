@@ -14,7 +14,7 @@ Explored requests, headless browser + Selenium, settled on PyAutoGUI (didn't wan
 
 
 Some tricks:
-- Can have PAG find images on screen
+- Can have PAG find images on screen (either pixel-perfect match or with OpenCV - can specify % confidence threshold)
 - Can take screenshots to find elements
     - CTRL+F, then look for solid color region of the CTRL+F color (usually, distinct!  Chrome = orange, FireFox = green)
 - be careful about webpage encoding!  often run into iso-8859-1
@@ -28,3 +28,7 @@ Once a link is clicked, the information stays on the page, even if the popup is 
 
 Show a GIF of this running!
     I want the GIF to be zoomed in so everyone can see, so I need to be able to run on a subset of the screen.
+
+**Warnings**
+
+With easyocr, each word usually has its own bounding box.  you may need to process easy-ocr's output further (ex: group words that have approx same y-coords into same row, space-delimited)
