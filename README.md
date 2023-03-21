@@ -36,6 +36,9 @@ Demo webpage:
     - https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs
     - https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Introduction
     - https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Manipulating_documents
+    - https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Manipulating_documents
+    - https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events
+    - https://webplatform.github.io/docs/tutorials/your_first_look_at_javascript/#Where-to-put-JavaScript
 
 - when recording GIF, increase my text-scaling (search for "fonts" in system), also use not-full-screen version of chrome (I want the GIF to be legible to everyone)
 - make slides!

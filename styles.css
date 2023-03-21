@@ -40,14 +40,21 @@ tbody th, tbody td {
 }
 
 /* "zebra-striping" rows */
-tbody tr:nth-child(odd) {
+tbody tr.odd {
     background-color: #EEE;
 }
-tbody tr:nth-child(even) {
+tbody tr.even {
     background-color: #CCC;
 }
 
 td.amount {
     text-align: right;
     padding-right: 1rem;
+}
+
+td.description {
+    text-decoration: underline;
+}
+.hidden {
+    display: none;
 }

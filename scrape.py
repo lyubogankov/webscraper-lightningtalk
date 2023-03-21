@@ -9,7 +9,8 @@ from PIL import Image           # https://pypi.org/project/Pillow/
 
 import download
 
-pyautogui.PAUSE = 1
+# raising default PAUSE time to avoid time.sleep() between pyautogui commands
+pyautogui.PAUSE = 1  # default = 0.1s
 
 def parse_webpage(webpage, parser='html.parser'):
     """Open provided webpage and parse using BeautifulSoup."""
@@ -31,6 +32,7 @@ def easyocr_to_pyautogui_coords(easyocr_boundingbox):
     return (tl_x, tl_y, tr_x - tl_x, bl_y - tl_y)
 
 def center_and_click(pyautogui_boundingbox):
+    """Compute boundingbox's center (x, y) and click that point (convinience function)."""
     pyautogui.click(
         pyautogui.center(
             pyautogui_boundingbox
@@ -77,7 +79,7 @@ def scrape():
     pprint(ocr_results)
     print('------------')
 
-    # 6. match descriptions to OCR results, click all the links
+    # 5. match descriptions to OCR results, click all the links
     for i, desc in enumerate(descriptions):
         while True:
             # not handling StopIteration exception
@@ -96,10 +98,10 @@ def scrape():
                 break
 
     return
-    # 7. download again, and parse!
+    # 6. download again, and parse!
     soup = parse_webpage(download.dl_to_known_location())
 
-    # 8. return parsed info
+    # 7. return parsed info
 
 if __name__ == '__main__':
     scrape()
