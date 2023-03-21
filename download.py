@@ -22,6 +22,6 @@ def dl_to_known_location():
 
     pyautogui.click((200, 250))  # click Downloads on the sidebar
     pyautogui.click((800, 575))  # click Save
-    pyautogui.click((945, 655))  # close Chrome downloads footer
+    pyautogui.click((945, 750))  # close Chrome downloads footer
 
     return f'/home/lyubo/Downloads/{tempfilename}.html'

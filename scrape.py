@@ -1,3 +1,5 @@
+import pdb
+import time
 from pprint import pprint
 
 import easyocr                  # https://pypi.org/project/easyocr/
@@ -16,6 +18,20 @@ def parse_webpage(webpage, parser='html.parser'):
     """Open provided webpage and parse using BeautifulSoup."""
     with open(webpage, 'r', encoding='utf-8') as f:
         return BeautifulSoup(f, parser)
+
+def extract_transaction_info(soup):
+    """Extract desired information from HTML page (description text and payment method)."""
+    tx_table = soup.find('tbody')
+    descriptions = [desc.text for desc in tx_table.find_all('td', class_='description')]
+    payment_methods = [paym.text for paym in tx_table.find_all('td', class_='paymethod')]
+    return descriptions, payment_methods
+
+def print_extracted(descriptions, payment_methods):
+    """Print out per-transaction description and payment method."""
+    current_state = 'BEFORE' if all(paym == "" for paym in payment_methods) else 'AFTER'
+    print(f'{current_state} LINK CLICKING:')
+    for desc, paymethod in zip(descriptions, payment_methods):
+        print(f'\t{desc:>12} {paymethod}')
 
 def take_cropped_screenshot(top, left, width, height, outputname='screenshot.png'):
     """Take a screenshot of a portion of the screen."""
@@ -49,41 +65,32 @@ def scrape():
     In order to run this code, please follow the repo README instructions.
     """
     
-    # 0. ALT-TAB to browser
+    # ALT-TAB to browser
     with pyautogui.hold('alt'):
         pyautogui.press('\t')
 
-    # 1. download initially
+    # initial download/parse
     webpage = download.dl_to_known_location()
     soup = parse_webpage(webpage)
+    descriptions, payment_methods = extract_transaction_info(soup)
+    print_extracted(descriptions, payment_methods)
 
-    # 2. parse - extract description text
-    tx_table = soup.find('tbody')
-    rows = tx_table.find_all('tr')
-    descriptions = [row.find_all('td')[2].text for row in rows]
-    
-    print('Descriptions extracted:', descriptions)
-
-    # 3. take screenshot, crop
-    OFFSET_TOP = 150
-    OFFSET_LEFT = 480
+    # take screenshot, crop
+    OFFSET_TOP, OFFSET_LEFT = 150, 480
     screenshot = take_cropped_screenshot(top=OFFSET_TOP, left=OFFSET_LEFT, width=480, height=530)
-    print(screenshot)
 
-    # 4. perform OCR
+    # perform OCR
     ocr_reader = easyocr.Reader(['en'], gpu=False)
-    ocr_results = iter(ocr_reader.readtext(screenshot))  # list -> iterator
-
-    print('------------')
-    print('OCR Results:')
+    ocr_results = ocr_reader.readtext(screenshot)
+    print('------------\nOCR Results:')
     pprint(ocr_results)
     print('------------')
 
-    # 5. match descriptions to OCR results, click all the links
+    # match descriptions to OCR results, click all the links
+    ocr_results = iter(ocr_results)  # list -> iterator
     for i, desc in enumerate(descriptions):
         while True:
-            # not handling StopIteration exception
-            ocrboundingbox, text, _ = next(ocr_results)
+            ocrboundingbox, text, _ = next(ocr_results)  # not handling StopIteration exception
             # offset our screenshot to get real screen coords!
             x, y, width, height = easyocr_to_pyautogui_coords(ocrboundingbox)
             realboundingbox = (x + OFFSET_LEFT, y + OFFSET_TOP, width, height)
@@ -91,17 +98,16 @@ def scrape():
             similarity = fuzz.partial_ratio(desc.lower(), text.lower())  # [0, 100]
             print(f'\t{desc:>12} {text:>12} [{similarity}% match]')
             if similarity > 80:
+                # open the hidden row to load the extra text content
                 center_and_click(realboundingbox)
-
-                # # if needed, close the box (2nd click)
-
+                time.sleep(2)
+                # close the hidden row so the boundingboxes we found are still valid!
+                center_and_click(realboundingbox)
                 break
 
-    return
-    # 6. download again, and parse!
+    # download again, and parse!
     soup = parse_webpage(download.dl_to_known_location())
-
-    # 7. return parsed info
+    print_extracted(*extract_transaction_info(soup))
 
 if __name__ == '__main__':
     scrape()
