@@ -2,6 +2,7 @@ body {
     font-family: "Roboto Mono", monospace;
 }
 
+/* Styling the table */
 table {
     table-layout: fixed;
     width: 100%;
@@ -9,6 +10,7 @@ table {
     text-align: left;
 }
 
+/* Header + col spacing */
 thead {
     letter-spacing: 1px;
     font-size: 0.9rem;
@@ -30,6 +32,7 @@ thead {
     background-color: rgb(95, 14, 105);
 }
 
+/* Body */
 tbody {
     font-size: 0.8rem;
     letter-spacing: 0.2px;
@@ -55,6 +58,12 @@ td.amount {
 td.description {
     text-decoration: underline;
 }
+
+/* (toggleable) hidden rows */
 .hidden {
     display: none;
+}
+tbody tr.extrainfo th {
+    text-align: right;
+    font-style: italic;
 }
