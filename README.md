@@ -19,26 +19,46 @@
 
 This code was tested using the OS / Chrome versions below.  I do not guarantee it'll work with other setups.
 - Linux Mint; Google Chrome 97.0.4692.99 64-bit
-- Windows; Google Chrome 
 
 ## TODO
 
-Python:
+### Python:
 - research minimum python version
 - what are the requirements (package version wise)?  can I make a requirements.txt?
 
-Demo webpage:
-- Do the HTML/CSS
-- Research Javascript
-    - https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Image_gallery
-    - https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events
-    - https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/Adding_bouncing_balls_features
-    - https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs
-    - https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Introduction
-    - https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Manipulating_documents
-    - https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Manipulating_documents
-    - https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events
-    - https://webplatform.github.io/docs/tutorials/your_first_look_at_javascript/#Where-to-put-JavaScript
+### Slides
+- Finish last several
+- Add animations
+- After I have a final draft, export as PDF and put into repo
 
-- when recording GIF, increase my text-scaling (search for "fonts" in system), also use not-full-screen version of chrome (I want the GIF to be legible to everyone)
-- make slides!
+### Update README -- document tips/tricks/warnings nicely (draft below)
+
+**Warnings**
+
+- With easyocr, each word usually has its own bounding box.  you may need to process easy-ocr's output further (ex: group words that have approx same y-coords into same row, space-delimited)
+    Show annotated screenshot!
+
+- pyautogui, PIL, easyocr all have different boundingbox coordinate "systems"
+
+- Fuzzywuzzy: match OCR results with description text
+In the slides - give example of real description vs real OCR'd and fuzzywuzzy results since the example is "clean"?
+
+- Be careful about webpage encoding!  often run into iso-8859-1
+
+**Tips and Tricks**
+
+- Can have PAG find images on screen (either pixel-perfect match or with OpenCV - can specify % confidence threshold) (*mentioned in presentation*)
+- Can take screenshots to find elements
+    - CTRL+F, then look for solid color region of the CTRL+F color (usually, distinct!  Chrome = orange, FireFox = green)
+
+
+## Linksave
+- https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Image_gallery
+- https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events
+- https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/Adding_bouncing_balls_features
+- https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs
+- https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Introduction
+- https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Manipulating_documents
+- https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Manipulating_documents
+- https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events
+- https://webplatform.github.io/docs/tutorials/your_first_look_at_javascript/#Where-to-put-JavaScript
