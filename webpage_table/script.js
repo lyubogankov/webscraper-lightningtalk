@@ -17,7 +17,7 @@ for(let i=0; i < descriptions.length; i++) {
             togglerowtext = togglerow.children[1].innerText;
 
             // populate content onto page the first time the description is clicked
-            // (not sure why, but it wasn't updating using togglerowtext, had to )
+            // (not sure why, but it wasn't updating using togglerowtext, had to re-access the innerText)
             if (togglerowtext === "")
                 togglerow.children[1].innerText = payment_methods[i];
 
