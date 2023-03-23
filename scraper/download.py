@@ -20,8 +20,8 @@ def dl_to_known_location():
     tempfilename = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
     pyautogui.write(tempfilename)
 
-    pyautogui.click((200, 250))  # click Downloads on the sidebar
-    pyautogui.click((800, 575))  # click Save
-    pyautogui.click((945, 750))  # close Chrome downloads footer
+    # the Downloads folder is already open, so no need to navigate anywhere.
+    pyautogui.click((805, 535))  # click Save
+    pyautogui.click((945, 520))  # close Chrome downloads footer
 
     return f'/home/lyubo/Downloads/{tempfilename}.html'

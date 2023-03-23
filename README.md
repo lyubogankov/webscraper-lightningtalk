@@ -27,9 +27,15 @@ This code was tested using the OS / Chrome versions below.  I do not guarantee i
 - what are the requirements (package version wise)?  can I make a requirements.txt?
 - clean up the `scrape.py` script, remove the big multiline string at the bottom
 
+- make the scraper work with the new table layout
+- make the scraper "combine" results from the same y-height
+    - make a function that consumes the results list and puts the words into "rows", need a heuristic for row separation
+
 ### Slides
 - Finish last several
 - Add animations
+    - Edit on windows laptop??
+    - Turn into GIFs
 - After I have a final draft, export as PDF and put into repo
 
 ### Update README -- document tips/tricks/warnings nicely (draft below)
