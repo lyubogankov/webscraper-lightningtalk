@@ -149,23 +149,23 @@ def scrape(verbose=False):
 
     # match questions to OCR results, click all the links
     print('MATCHING EXTRACTED <-> OCR:')
-    ocr_rows = iter(ocr_rows)  # list -> iterator
-    for i, q in enumerate(questions):
-        while True:
-            ocrboundingbox, text = next(ocr_rows)  # not handling StopIteration exception
-            # offset our screenshot to get real screen coords!
-            x, y, width, height = easyocr_to_pyautogui_coords(ocrboundingbox)
-            realboundingbox = (x + OFFSET_LEFT, y + OFFSET_TOP, width, height)
+    for extractedtext, (ocrboundingbox, ocrtext) in zip(questions, ocr_rows):
+        # offset our screenshot to get real screen coords!
+        x, y, width, height = easyocr_to_pyautogui_coords(ocrboundingbox)
+        realboundingbox = (x + OFFSET_LEFT, y + OFFSET_TOP, width, height)
 
-            similarity = fuzz.partial_ratio(q.lower(), text.lower())  # [0, 100]
-            print(f'\t{q:>15} {text:>15} [{similarity}% match]')
-            if similarity > 80:
-                # open the hidden row to load the extra text content
-                center_and_click(realboundingbox)
-                time.sleep(2)
-                # close the hidden row so the boundingboxes we found are still valid!
-                center_and_click(realboundingbox)
-                break
+        similarity = fuzz.partial_ratio(extractedtext.lower(), ocrtext.lower())  # [0, 100]
+        print(f'\t{extractedtext:>15} {ocrtext:>15} [{similarity}% match]')
+        if similarity > 80:
+            # open the hidden row to load the extra text content
+            center_and_click(realboundingbox)
+            time.sleep(2)
+            # close the hidden row so the boundingboxes we found are still valid!
+            center_and_click(realboundingbox)
+        else:
+            print("Extracted / OCR text don't seem to match: skipping")
+            print(extractedtext)
+            print(ocrtext)
 
     # download again, and parse!
     soup = parse_webpage(download.dl_to_known_location())
