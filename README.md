@@ -25,18 +25,10 @@ This code was tested using the OS / Chrome versions below.  I do not guarantee i
 ### Python:
 - research minimum python version
 - what are the requirements (package version wise)?  can I make a requirements.txt?
-- clean up the `scrape.py` script, remove the big multiline string at the bottom
-
-- make the scraper work with the new table layout
-- make the scraper "combine" results from the same y-height
-    - make a function that consumes the results list and puts the words into "rows", need a heuristic for row separation
 
 ### Slides
-- Finish last several
-- Add animations
-    - Edit on windows laptop??
-    - Turn into GIFs
 - After I have a final draft, export as PDF and put into repo
+
 
 ### Update README -- document tips/tricks/warnings nicely (draft below)
 
@@ -57,6 +49,36 @@ In the slides - give example of real description vs real OCR'd and fuzzywuzzy re
 - Can have PAG find images on screen (either pixel-perfect match or with OpenCV - can specify % confidence threshold) (*mentioned in presentation*)
 - Can take screenshots to find elements
     - CTRL+F, then look for solid color region of the CTRL+F color (usually, distinct!  Chrome = orange, FireFox = green)
+
+**OCR example**
+
+'''
+example.png
+
+Draw bounding boxes around the OCR results -- show easyocr's behavior!
+
+OCR results:
+[[3, 17], [323, 17], [323, 83], [3, 83]]
+[1.00] Favorite
+[[352, 6], [603, 6], [603, 86], [352, 86]]
+[0.60] color2
+[[0, 105], [324, 105], [324, 178], [0, 178]]
+[1.00] Favorite_
+[[351, 97], [564, 97], [564, 181], [351, 181]]
+[0.71] food2
+
+OCR Rows:
+Favorite color2 [[  3,  17], [603,   6], [603,  86], [  3,  83]]
+Favorite_ food2 [[  0, 105], [564,  97], [564, 181], [  0, 178]]
+'''
+
+'''
+Not dealing with:
+- error handling
+    . what happens if the webpage doesn't download?
+    . what happens if we are using the wrong encoding?
+- centering the table
+'''
 
 
 ## Linksave

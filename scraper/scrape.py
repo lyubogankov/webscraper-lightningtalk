@@ -173,27 +173,3 @@ def scrape(verbose=False):
 
 if __name__ == '__main__':
     scrape()
-
-'''
-example.png
-
-Draw bounding boxes around the OCR results -- show easyocr's behavior!
-
-OCR results:
-[[3, 17], [323, 17], [323, 83], [3, 83]]
-[1.00] Favorite
-[[352, 6], [603, 6], [603, 86], [352, 86]]
-[0.60] color2
-[[0, 105], [324, 105], [324, 178], [0, 178]]
-[1.00] Favorite_
-[[351, 97], [564, 97], [564, 181], [351, 181]]
-[0.71] food2
-'''
-
-'''
-Not dealing with:
-- error handling
-    . what happens if the webpage doesn't download?
-    . what happens if we are using the wrong encoding?
-- centering the table
-'''
