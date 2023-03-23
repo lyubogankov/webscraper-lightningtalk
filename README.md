@@ -25,6 +25,7 @@ This code was tested using the OS / Chrome versions below.  I do not guarantee i
 ### Python:
 - research minimum python version
 - what are the requirements (package version wise)?  can I make a requirements.txt?
+- clean up the `scrape.py` script, remove the big multiline string at the bottom
 
 ### Slides
 - Finish last several
