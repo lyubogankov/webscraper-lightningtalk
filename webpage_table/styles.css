@@ -1,5 +1,7 @@
 body {
     font-family: "Roboto Mono", monospace;
+    background-color: #f3f3f3;
+    margin: 1px;
 }
 
 /* Styling the table */
