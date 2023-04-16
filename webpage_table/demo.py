@@ -17,4 +17,4 @@ def demo_woe():
         time.sleep(delay_after)
 
 if __name__ == '__main__':
-    demo_woe()
+    demo_table()
